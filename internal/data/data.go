@@ -1,11 +1,11 @@
 package data
 
 const (
-	FileNameAlpha2  = "data/alpha-2.txt"
-	FileVoiceRead   = "simulator/voice.data"
-	FileSmsRead     = "simulator/sms.data"
-	FileEmailRead   = "simulator/email.data"
-	FileBillingRead = "simulator/billing.data"
+	FileNameAlpha2  = "../data/alpha-2.txt"
+	FileVoiceRead   = "../simulator/voice.data"
+	FileSmsRead     = "../simulator/sms.data"
+	FileEmailRead   = "../simulator/email.data"
+	FileBillingRead = "../simulator/billing.data"
 	UrlMMS          = "http://127.0.0.1:8383/mms"
 	UrlSuport       = "http://127.0.0.1:8383/support"
 	UrlAccendent    = "http://127.0.0.1:8383/accendent"
