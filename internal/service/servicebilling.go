@@ -1,4 +1,4 @@
-package servicebilling
+package service
 
 import (
 	"mymod/internal/data"

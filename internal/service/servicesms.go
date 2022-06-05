@@ -1,4 +1,4 @@
-package servicesms
+package service
 
 import (
 	"mymod/internal/data"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-var counter int
+var counter2 int
 var StorageDataSMS = make([]data.SMSData, 0)
 
 func FileSMS() [][]data.SMSData {
@@ -25,7 +25,7 @@ func FileSMS() [][]data.SMSData {
 						Provider:     sms[3],
 					}
 					StorageDataSMS = append(StorageDataSMS, newPerson)
-					counter++
+					counter2++
 				}
 			}
 		}

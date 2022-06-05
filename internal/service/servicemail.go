@@ -1,4 +1,4 @@
-package servicemail
+package service
 
 import (
 	"mymod/internal/data"
@@ -10,7 +10,7 @@ import (
 var StorageDataEmailCall = make([]data.EmailData, 0)
 var temporaryMap = make(map[string][]data.EmailData)
 var emailMap = make(map[string][][]data.EmailData)
-var counter int
+var counter3 int
 
 func FileEmail() map[string][][]data.EmailData {
 	file := method.ReadFile(data.FileEmailRead)
@@ -26,7 +26,7 @@ func FileEmail() map[string][][]data.EmailData {
 						DeliveryTime: method.StringIntoInt(email[2]),
 					}
 					StorageDataEmailCall = append(StorageDataEmailCall, newPerson)
-					counter++
+					counter3++
 				}
 
 			}

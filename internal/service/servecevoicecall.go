@@ -1,4 +1,4 @@
-package servecevoicecall
+package service
 
 import (
 	"mymod/internal/data"

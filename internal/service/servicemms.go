@@ -1,4 +1,4 @@
-package servicemms
+package service
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package serviceincident
+package service
 
 import (
 	"encoding/json"
