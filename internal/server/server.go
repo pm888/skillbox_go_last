@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"github.com/gorilla/mux"
 	"log"
 	"mymod/internal/api"
 	"mymod/internal/data"
@@ -13,16 +12,17 @@ import (
 )
 
 func Server() {
-	r := mux.NewRouter()
-	r.HandleFunc("/", handleConnection)
+	mux := http.NewServeMux()
+	mux.Handle("/", http.FileServer(http.Dir("./web")))
+	mux.HandleFunc("/api/", handleConnection)
+
 	srv := &http.Server{
-		Addr:    ":8080",
-		Handler: r,
-	}
+		Handler: mux,
+		Addr:    data.UrlServer}
 
 	go func() {
-		log.Printf("starting server...")
-		if err := http.ListenAndServe(data.UrlServer, r); err != nil {
+		log.Printf("Listening on :%s...", data.UrlServer)
+		if err := srv.ListenAndServe(); err != nil {
 			switch err {
 			case http.ErrServerClosed:
 				log.Printf("server has been closed")

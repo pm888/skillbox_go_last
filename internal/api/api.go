@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"mymod/internal/data"
 	"mymod/internal/get"
@@ -15,6 +16,7 @@ func GetApi() []byte {
 	var resSetnil data.ResultSetT
 	resSet = *get.GetResultData()
 	//resSet.SMS = nil
+	fmt.Println(resT)
 	if resSet.SMS != nil && resSet.MMS != nil &&
 		resSet.VoiceCall != nil &&
 		resSet.Email != nil &&

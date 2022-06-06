@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"mymod/internal/data"
 	"mymod/internal/method"
 	"sort"
@@ -48,7 +49,7 @@ func FileEmail() map[string][][]data.EmailData {
 		emailMap[key] = append(emailMap[key], []data.EmailData{val[len(val)-1], val[len(val)-2], val[len(val)-3]})
 
 	}
-
+	fmt.Println(emailMap)
 	return emailMap
 
 }

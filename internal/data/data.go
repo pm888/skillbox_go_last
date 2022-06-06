@@ -1,15 +1,15 @@
 package data
 
 const (
-	FileNameAlpha2  = "../data/alpha-2.txt"
-	FileVoiceRead   = "../simulator/voice.data"
-	FileSmsRead     = "../simulator/sms.data"
-	FileEmailRead   = "../simulator/email.data"
-	FileBillingRead = "../simulator/billing.data"
+	FileNameAlpha2  = "data/alpha-2.txt"
+	FileVoiceRead   = "simulator/voice.data"
+	FileSmsRead     = "simulator/sms.data"
+	FileEmailRead   = "simulator/email.data"
+	FileBillingRead = "simulator/billing.data"
 	UrlMMS          = "http://127.0.0.1:8383/mms"
 	UrlSuport       = "http://127.0.0.1:8383/support"
 	UrlAccendent    = "http://127.0.0.1:8383/accendent"
-	UrlServer       = "127.0.0.1:8282"
+	UrlServer       = "127.0.0.1:8080"
 )
 
 var Report *ResultSetT
@@ -43,21 +43,21 @@ var ValidProvidersEmail = map[string]struct{}{
 }
 
 type SMSData struct {
-	Country      string
-	Bandwidth    string
-	ResponseTime string
-	Provider     string
+	Country      string `json:"country"`
+	Bandwidth    string `json:"bandwidth"`
+	ResponseTime string `json:"response_time"`
+	Provider     string `json:"provider"`
 }
 
 type VoiceCallData struct {
-	Country             string
-	Bandwidth           string
-	ResponseTime        string
-	Provider            string
-	ConnectionStability float32
-	TTFB                int
-	VoicePurity         int
-	MedianOfCallsTime   int
+	Country             string  `json:"country"`
+	Bandwidth           string  `json:"bandwidth"`
+	ResponseTime        string  `json:"response_time"`
+	Provider            string  `json:"provider"`
+	ConnectionStability float32 `json:"connection_stability"`
+	TTFB                int     `json:"ttfb"`
+	VoicePurity         int     `json:"voice_purity"`
+	MedianOfCallsTime   int     `json:"median_of_call_time"`
 }
 type MMSData struct {
 	Country      string `json:"country"`
@@ -67,9 +67,9 @@ type MMSData struct {
 }
 
 type EmailData struct {
-	Country      string
-	Provider     string
-	DeliveryTime int
+	Country      string `json:"country"`
+	Provider     string `json:"provider"`
+	DeliveryTime int    `json:"deliverytime"`
 }
 type SupportData struct {
 	Topic         string `json:"topic"`
@@ -81,12 +81,12 @@ type IncidentData struct {
 	Status string `json:"status"`
 }
 type BillingData struct {
-	CreateCustomer bool
-	Purchase       bool
-	Payout         bool
-	Recurring      bool
-	FraudControl   bool
-	CheckoutPage   bool
+	CreateCustomer bool `json:"createCustomer"`
+	Purchase       bool `json:"purchase"`
+	Payout         bool `json:"payout"`
+	Recurring      bool `json:"recurring"`
+	FraudControl   bool `json:"fraudControl"`
+	CheckoutPage   bool `json:"checkoutPage"`
 }
 
 type ResultT struct {
