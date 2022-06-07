@@ -2,21 +2,18 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"mymod/internal/data"
 	"mymod/internal/get"
 )
 
-func GetApi() []byte {
+func GetApi() ([]byte, error) {
 	var js []byte
 	var err error
 	var resT data.ResultT
-	var resSet data.ResultSetT
-	var resSetnil data.ResultSetT
-	resSet = *get.GetResultData()
-	//resSet.SMS = nil
-	fmt.Println(resT)
+	resSet, err := get.GetResultData()
+	if err != nil {
+		return nil, err
+	}
 	if resSet.SMS != nil && resSet.MMS != nil &&
 		resSet.VoiceCall != nil &&
 		resSet.Email != nil &&
@@ -24,22 +21,21 @@ func GetApi() []byte {
 		resSet.Support != nil &&
 		resSet.Incidents != nil {
 		resT.Status = true
-		resT.Data = resSet
+		resT.Data = *resSet
 		js, err = json.Marshal(resT)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 	} else {
 		resT.Status = false
 		resT.Error = "Error on collect data"
-		resT.Data = resSetnil
+		resT.Data = *resSet
 		js, err = json.Marshal(resT)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 
 	}
-
-	return js
+	return js, err
 
 }

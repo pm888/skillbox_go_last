@@ -14,9 +14,10 @@ func RemoveApplications(apps []data.MMSData, i int) []data.MMSData {
 	return apps
 }
 
-func GetMMS() [][]data.MMSData {
-	body := method.GetBody(data.UrlMMS)
+func GetMMS() ([][]data.MMSData, error) {
+	body, err := method.GetBody(data.UrlMMS)
 	if err := json.Unmarshal(body, &DataMMS); err != nil {
+		return nil, err
 	}
 
 	for i := len(DataMMS) - 1; i != 0; i-- {
@@ -45,6 +46,6 @@ func GetMMS() [][]data.MMSData {
 	})
 	sliceSliceMms[1] = sliceCopy
 
-	return sliceSliceMms
+	return sliceSliceMms, err
 
 }

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"mymod/internal/data"
 	"mymod/internal/method"
 	"sort"
@@ -13,18 +12,22 @@ var temporaryMap = make(map[string][]data.EmailData)
 var emailMap = make(map[string][][]data.EmailData)
 var counter3 int
 
-func FileEmail() map[string][][]data.EmailData {
-	file := method.ReadFile(data.FileEmailRead)
+func FileEmail() (map[string][][]data.EmailData, error) {
+	file, err := method.ReadFile(data.FileEmailRead)
 	stringsTemp := strings.Split(string(file), "\n")
 	for i := 0; i < len(stringsTemp)-1; i++ {
 		email := strings.Split(stringsTemp[i], ";")
 		if len(email) == 3 {
 			for key, _ := range method.Alfa2Data {
 				if key == email[0] && method.IsValidEmailProvider(email[1]) {
+					time, err := method.StringIntoInt(email[2])
+					if err != nil {
+						return nil, err
+					}
 					newPerson := data.EmailData{
 						Country:      email[0],
 						Provider:     email[1],
-						DeliveryTime: method.StringIntoInt(email[2]),
+						DeliveryTime: time,
 					}
 					StorageDataEmailCall = append(StorageDataEmailCall, newPerson)
 					counter3++
@@ -49,7 +52,6 @@ func FileEmail() map[string][][]data.EmailData {
 		emailMap[key] = append(emailMap[key], []data.EmailData{val[len(val)-1], val[len(val)-2], val[len(val)-3]})
 
 	}
-	fmt.Println(emailMap)
-	return emailMap
+	return emailMap, err
 
 }

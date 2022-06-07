@@ -12,29 +12,19 @@ import (
 
 var Alfa2Data = make(map[string]string)
 
-func ReadFile(nameFile string) []byte {
+func ReadFile(nameFile string) ([]byte, error) {
 	file, err := ioutil.ReadFile(nameFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return file
+	return file, err
 }
 
-func StringIntoInt(str string) (chInt int) {
+func StringIntoInt(str string) (int, error) {
 	chInt, err := strconv.Atoi(str)
-	if err != nil {
-		log.Fatal("Bad string", err)
-	}
-	return
+	return chInt, err
 }
 
-func StringIntoFloat32(str string) float32 {
+func StringIntoFloat32(str string) (float32, error) {
 	chFloat32, err := strconv.ParseFloat(str, 32)
-	if err != nil {
-		log.Fatal("Bad string", err)
-	}
-
-	return float32(chFloat32)
+	return float32(chFloat32), err
 }
 
 func IsValidSmsMmsProvider(name string) bool {
@@ -52,8 +42,8 @@ func IsValidEmailProvider(name string) bool {
 	return ok
 }
 
-func FileIntoMap() {
-	file := ReadFile(data.FileNameAlpha2)
+func FileIntoMap() error {
+	file, err := ReadFile(data.FileNameAlpha2)
 	sliceIntoFile := strings.Split(string(file), "\n")
 	for i := 0; i < len(sliceIntoFile)-1; i++ {
 		str := sliceIntoFile[i]
@@ -61,27 +51,21 @@ func FileIntoMap() {
 		Alfa2Data[sliceCod[1]] = sliceCod[0]
 
 	}
+	return err
 
 }
 
-func GetBody(url string) []byte {
+func GetBody(url string) ([]byte, error) {
 	var body []byte
 	var err error
 	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	if resp.StatusCode == http.StatusOK {
 		body, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
 		defer resp.Body.Close()
 	} else {
 		log.Fatal(resp.StatusCode, err)
 	}
-	return body
+	return body, err
 }
 
 func Interpretation(sliceFile []byte) float64 {

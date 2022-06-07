@@ -10,8 +10,8 @@ import (
 var counter2 int
 var StorageDataSMS = make([]data.SMSData, 0)
 
-func FileSMS() [][]data.SMSData {
-	file := method.ReadFile(data.FileSmsRead)
+func FileSMS() ([][]data.SMSData, error) {
+	file, err := method.ReadFile(data.FileSmsRead)
 	stringsTemp := strings.Split(string(file), "\n")
 	for i := 0; i < len(stringsTemp)-1; i++ {
 		sms := strings.Split(stringsTemp[i], ";")
@@ -56,6 +56,6 @@ func FileSMS() [][]data.SMSData {
 	})
 	sliceSliceSms[1] = sliceCopy
 
-	return sliceSliceSms
+	return sliceSliceSms, err
 
 }

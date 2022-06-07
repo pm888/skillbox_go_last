@@ -16,8 +16,8 @@ const (
 
 var BillingDataSlice = make([]data.BillingData, 0)
 
-func ReadBilling() []data.BillingData {
-	sliceFile := method.ReadFile(data.FileBillingRead)
+func ReadBilling() ([]data.BillingData, error) {
+	sliceFile, err := method.ReadFile(data.FileBillingRead)
 	ch := method.Interpretation(sliceFile)
 	mask := int(ch)
 	person := data.BillingData{
@@ -29,6 +29,6 @@ func ReadBilling() []data.BillingData {
 		CheckoutPage:   CheckoutPagePosition&mask > 0,
 	}
 	BillingDataSlice = append(BillingDataSlice, person)
-	return BillingDataSlice
+	return BillingDataSlice, err
 
 }

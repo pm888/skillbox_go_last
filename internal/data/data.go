@@ -57,7 +57,7 @@ type VoiceCallData struct {
 	ConnectionStability float32 `json:"connection_stability"`
 	TTFB                int     `json:"ttfb"`
 	VoicePurity         int     `json:"voice_purity"`
-	MedianOfCallsTime   int     `json:"median_of_call_time"`
+	MedianOfCallsTime   int     `json:"median_of_calls_time"`
 }
 type MMSData struct {
 	Country      string `json:"country"`
@@ -69,7 +69,7 @@ type MMSData struct {
 type EmailData struct {
 	Country      string `json:"country"`
 	Provider     string `json:"provider"`
-	DeliveryTime int    `json:"deliverytime"`
+	DeliveryTime int    `json:"delivery_time"`
 }
 type SupportData struct {
 	Topic         string `json:"topic"`

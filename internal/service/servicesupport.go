@@ -8,11 +8,12 @@ import (
 
 var DataSupport = make([]*data.SupportData, 0)
 
-func GetSupport() []int {
+func GetSupport() ([]int, error) {
 	var totalTicets int
 	var loadSupport int
-	body := method.GetBody(data.UrlSuport)
+	body, err := method.GetBody(data.UrlSuport)
 	if err := json.Unmarshal(body, &DataSupport); err != nil {
+		return nil, err
 	}
 
 	for i := range DataSupport {
@@ -28,6 +29,6 @@ func GetSupport() []int {
 	case totalTicets > 16:
 		loadSupport = 3
 	}
-	return []int{loadSupport, int(expectation)}
+	return []int{loadSupport, int(expectation)}, err
 
 }

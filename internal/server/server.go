@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"mymod/internal/api"
 	"mymod/internal/data"
@@ -49,5 +50,10 @@ func ShutdownServer(srv *http.Server) {
 
 func handleConnection(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write(api.GetApi())
+	get, err := api.GetApi()
+	if err != nil {
+		fmt.Println(err)
+	}
+	w.Write(get)
+
 }

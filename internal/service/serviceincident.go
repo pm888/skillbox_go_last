@@ -9,14 +9,15 @@ import (
 
 var DataIncident = make([]data.IncidentData, 0)
 
-func Incident() []data.IncidentData {
-	body := method.GetBody(data.UrlAccendent)
+func Incident() ([]data.IncidentData, error) {
+	body, err := method.GetBody(data.UrlAccendent)
 	if err := json.Unmarshal(body, &DataIncident); err != nil {
+		return nil, err
 	}
 
 	sort.Slice(DataIncident, func(i, j int) (less bool) {
 		return DataIncident[i].Status < DataIncident[j].Status
 	})
-	return DataIncident
+	return DataIncident, err
 
 }
