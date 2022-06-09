@@ -6,9 +6,8 @@ import (
 	"mymod/internal/method"
 )
 
-var DataSupport = make([]*data.SupportData, 0)
-
 func GetSupport() ([]int, error) {
+	var DataSupport = make([]*data.SupportData, 0)
 	var totalTicets int
 	var loadSupport int
 	body, err := method.GetBody(data.UrlSuport)

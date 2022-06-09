@@ -7,9 +7,8 @@ import (
 	"sort"
 )
 
-var DataIncident = make([]data.IncidentData, 0)
-
 func Incident() ([]data.IncidentData, error) {
+	var DataIncident = make([]data.IncidentData, 0)
 	body, err := method.GetBody(data.UrlAccendent)
 	if err := json.Unmarshal(body, &DataIncident); err != nil {
 		return nil, err

@@ -6,11 +6,12 @@ import (
 	"strings"
 )
 
-var StorageDataVoiceCall = make([]data.VoiceCallData, 0)
-var counter int
-
 func FileVoice() ([]data.VoiceCallData, error) {
+	var StorageDataVoiceCall = make([]data.VoiceCallData, 0)
 	file, err := method.ReadFile(data.FileVoiceRead)
+	if err != nil {
+		return nil, err
+	}
 	stringsTemp := strings.Split(string(file), "\n")
 	for i := 0; i < len(stringsTemp)-1; i++ {
 		voice := strings.Split(stringsTemp[i], ";")
@@ -44,7 +45,6 @@ func FileVoice() ([]data.VoiceCallData, error) {
 						MedianOfCallsTime:   medianOfCallsTime,
 					}
 					StorageDataVoiceCall = append(StorageDataVoiceCall, newPerson)
-					counter++
 				}
 			}
 		}

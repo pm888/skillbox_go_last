@@ -1,22 +1,24 @@
 package service
 
 import (
+	"fmt"
 	"mymod/internal/data"
 	"mymod/internal/method"
 	"sort"
 	"strings"
 )
 
-var counter2 int
-var StorageDataSMS = make([]data.SMSData, 0)
-
 func FileSMS() ([][]data.SMSData, error) {
+	var StorageDataSMS = make([]data.SMSData, 0)
 	file, err := method.ReadFile(data.FileSmsRead)
+	if err != nil {
+		return nil, err
+	}
 	stringsTemp := strings.Split(string(file), "\n")
 	for i := 0; i < len(stringsTemp)-1; i++ {
 		sms := strings.Split(stringsTemp[i], ";")
 		if len(sms) == 4 {
-			for key, _ := range method.Alfa2Data {
+			for key := range method.Alfa2Data {
 				if key == sms[0] && method.IsValidSmsMmsProvider(sms[3]) {
 					newPerson := data.SMSData{
 						Country:      sms[0],
@@ -25,11 +27,11 @@ func FileSMS() ([][]data.SMSData, error) {
 						Provider:     sms[3],
 					}
 					StorageDataSMS = append(StorageDataSMS, newPerson)
-					counter2++
 				}
 			}
 		}
 	}
+	fmt.Println("SMS", StorageDataSMS)
 
 	for i := 0; i < len(StorageDataSMS); i++ {
 		for key := range method.Alfa2Data {
@@ -55,7 +57,6 @@ func FileSMS() ([][]data.SMSData, error) {
 		return sliceCopy[i].Country < sliceCopy[j].Country
 	})
 	sliceSliceSms[1] = sliceCopy
-
 	return sliceSliceSms, err
 
 }

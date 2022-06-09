@@ -8,7 +8,6 @@ import (
 
 func GetApi() ([]byte, error) {
 	var js []byte
-	var err error
 	var resT data.ResultT
 	resSet, err := get.GetResultData()
 	if err != nil {

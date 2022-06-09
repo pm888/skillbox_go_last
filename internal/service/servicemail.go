@@ -7,13 +7,14 @@ import (
 	"strings"
 )
 
-var StorageDataEmailCall = make([]data.EmailData, 0)
-var temporaryMap = make(map[string][]data.EmailData)
-var emailMap = make(map[string][][]data.EmailData)
-var counter3 int
-
 func FileEmail() (map[string][][]data.EmailData, error) {
+	var StorageDataEmailCall = make([]data.EmailData, 0)
+	var temporaryMap = make(map[string][]data.EmailData)
+	var emailMap = make(map[string][][]data.EmailData)
 	file, err := method.ReadFile(data.FileEmailRead)
+	if err != nil {
+		return nil, err
+	}
 	stringsTemp := strings.Split(string(file), "\n")
 	for i := 0; i < len(stringsTemp)-1; i++ {
 		email := strings.Split(stringsTemp[i], ";")
@@ -30,7 +31,6 @@ func FileEmail() (map[string][][]data.EmailData, error) {
 						DeliveryTime: time,
 					}
 					StorageDataEmailCall = append(StorageDataEmailCall, newPerson)
-					counter3++
 				}
 
 			}

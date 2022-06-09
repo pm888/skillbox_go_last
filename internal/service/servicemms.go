@@ -7,14 +7,13 @@ import (
 	"sort"
 )
 
-var DataMMS = make([]data.MMSData, 0)
-
 func RemoveApplications(apps []data.MMSData, i int) []data.MMSData {
 	apps = append(apps[:i], apps[i+1:]...)
 	return apps
 }
 
 func GetMMS() ([][]data.MMSData, error) {
+	var DataMMS = make([]data.MMSData, 0)
 	body, err := method.GetBody(data.UrlMMS)
 	if err := json.Unmarshal(body, &DataMMS); err != nil {
 		return nil, err

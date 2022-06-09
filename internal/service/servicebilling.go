@@ -14,9 +14,8 @@ const (
 	CheckoutPagePosition
 )
 
-var BillingDataSlice = make([]data.BillingData, 0)
-
 func ReadBilling() ([]data.BillingData, error) {
+	var BillingDataSlice = make([]data.BillingData, 0)
 	sliceFile, err := method.ReadFile(data.FileBillingRead)
 	ch := method.Interpretation(sliceFile)
 	mask := int(ch)
