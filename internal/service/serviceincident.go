@@ -2,14 +2,15 @@ package service
 
 import (
 	"encoding/json"
-	"mymod/internal/data"
-	"mymod/internal/method"
 	"sort"
+
+	"mymod/internal/data"
+	"mymod/internal/helpers"
 )
 
 func Incident() ([]data.IncidentData, error) {
 	var DataIncident = make([]data.IncidentData, 0)
-	body, err := method.GetBody(data.UrlAccendent)
+	body, err := helpers.GetBody(data.UrlAccendent)
 	if err := json.Unmarshal(body, &DataIncident); err != nil {
 		return nil, err
 	}

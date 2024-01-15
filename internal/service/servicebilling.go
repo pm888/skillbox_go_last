@@ -2,7 +2,7 @@ package service
 
 import (
 	"mymod/internal/data"
-	"mymod/internal/method"
+	"mymod/internal/helpers"
 )
 
 const (
@@ -16,8 +16,8 @@ const (
 
 func ReadBilling() ([]data.BillingData, error) {
 	var BillingDataSlice = make([]data.BillingData, 0)
-	sliceFile, err := method.ReadFile(data.FileBillingRead)
-	ch := method.Interpretation(sliceFile)
+	sliceFile, err := helpers.ReadFile(data.FileBillingRead)
+	ch := helpers.Interpretation(sliceFile)
 	mask := int(ch)
 	person := data.BillingData{
 		CreateCustomer: CreateCustomerPosition&mask > 0,

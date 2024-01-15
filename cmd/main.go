@@ -1,15 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"mymod/internal/method"
+	"log"
+
+	"mymod/internal/helpers"
 	"mymod/internal/server"
 )
 
 func main() {
-	err := method.FileIntoMap()
-	if err != nil {
-		fmt.Println(err)
+	if err := helpers.ReadFileIntoMap(); err != nil {
+		log.Println(err)
 	}
-	server.Server()
+	if err := server.Server(); err != nil {
+		log.Println(err)
+	}
 }

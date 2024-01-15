@@ -1,17 +1,18 @@
 package service
 
 import (
-	"mymod/internal/data"
-	"mymod/internal/method"
 	"sort"
 	"strings"
+
+	"mymod/internal/data"
+	"mymod/internal/helpers"
 )
 
 func FileEmail() (map[string][][]data.EmailData, error) {
 	var StorageDataEmailCall = make([]data.EmailData, 0)
 	var temporaryMap = make(map[string][]data.EmailData)
 	var emailMap = make(map[string][][]data.EmailData)
-	file, err := method.ReadFile(data.FileEmailRead)
+	file, err := helpers.ReadFile(data.FileEmailRead)
 	if err != nil {
 		return nil, err
 	}
@@ -19,9 +20,9 @@ func FileEmail() (map[string][][]data.EmailData, error) {
 	for i := 0; i < len(stringsTemp)-1; i++ {
 		email := strings.Split(stringsTemp[i], ";")
 		if len(email) == 3 {
-			for key, _ := range method.Alfa2Data {
-				if key == email[0] && method.IsValidEmailProvider(email[1]) {
-					time, err := method.StringIntoInt(email[2])
+			for key, _ := range helpers.Alfa2Data {
+				if key == email[0] && helpers.IsValidEmailProvider(email[1]) {
+					time, err := helpers.StringIntoInt(email[2])
 					if err != nil {
 						return nil, err
 					}

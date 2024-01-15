@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+
 	"mymod/internal/data"
 	"mymod/internal/get"
 )
@@ -9,7 +10,7 @@ import (
 func GetApi() ([]byte, error) {
 	var js []byte
 	var resT data.ResultT
-	resSet, err := get.GetResultData()
+	resSet, err := get.Result()
 	if err != nil {
 		return nil, err
 	}

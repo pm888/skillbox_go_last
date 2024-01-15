@@ -2,15 +2,16 @@ package service
 
 import (
 	"encoding/json"
+
 	"mymod/internal/data"
-	"mymod/internal/method"
+	"mymod/internal/helpers"
 )
 
 func GetSupport() ([]int, error) {
 	var DataSupport = make([]*data.SupportData, 0)
 	var totalTicets int
 	var loadSupport int
-	body, err := method.GetBody(data.UrlSuport)
+	body, err := helpers.GetBody(data.UrlSuport)
 	if err := json.Unmarshal(body, &DataSupport); err != nil {
 		return nil, err
 	}

@@ -1,21 +1,18 @@
-package method
+package helpers
 
 import (
 	"io/ioutil"
 	"log"
 	"math"
-	"mymod/internal/data"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
+
+	"mymod/internal/data"
 )
 
 var Alfa2Data = make(map[string]string)
-
-func ReadFile(nameFile string) ([]byte, error) {
-	file, err := ioutil.ReadFile(nameFile)
-	return file, err
-}
 
 func StringIntoInt(str string) (int, error) {
 	chInt, err := strconv.Atoi(str)
@@ -42,14 +39,16 @@ func IsValidEmailProvider(name string) bool {
 	return ok
 }
 
-func FileIntoMap() error {
-	file, err := ReadFile(data.FileNameAlpha2)
+func ReadFileIntoMap() error {
+	file, err := os.ReadFile(data.FileNameAlpha2)
+	if err != nil {
+		return err
+	}
 	sliceIntoFile := strings.Split(string(file), "\n")
 	for i := 0; i < len(sliceIntoFile)-1; i++ {
 		str := sliceIntoFile[i]
 		sliceCod := strings.Split(str, ".")
 		Alfa2Data[sliceCod[1]] = sliceCod[0]
-
 	}
 	return err
 

@@ -2,49 +2,57 @@ package service
 
 import (
 	"encoding/json"
-	"mymod/internal/data"
-	"mymod/internal/method"
 	"sort"
-)
 
-func RemoveApplications(apps []data.MMSData, i int) []data.MMSData {
-	apps = append(apps[:i], apps[i+1:]...)
-	return apps
-}
+	"mymod/internal/data"
+	"mymod/internal/helpers"
+)
 
 func GetMMS() ([][]data.MMSData, error) {
 	var DataMMS = make([]data.MMSData, 0)
-	body, err := method.GetBody(data.UrlMMS)
+	body, err := helpers.GetBody(data.UrlMMS)
+	if err != nil {
+		return nil, err
+	}
+
 	if err := json.Unmarshal(body, &DataMMS); err != nil {
 		return nil, err
 	}
 
-	for i := len(DataMMS) - 1; i != 0; i-- {
-		if !method.IsValidSmsMmsProvider(DataMMS[i].Provider) {
-			DataMMS = RemoveApplications(DataMMS, i)
-			continue
-		}
-
-		if _, ok := method.Alfa2Data[DataMMS[i].Country]; !ok {
-			DataMMS = RemoveApplications(DataMMS, i)
-
-		}
+	// Функция для проверки наличия элемента в мапе
+	hasCountry := func(country string) bool {
+		_, ok := helpers.Alfa2Data[country]
+		return ok
 	}
+
+	// Функция для фильтрации элементов
+	filterMMS := func(apps []data.MMSData) []data.MMSData {
+		result := make([]data.MMSData, 0, len(apps))
+		for i := range apps {
+			if helpers.IsValidSmsMmsProvider(apps[i].Provider) && hasCountry(apps[i].Country) {
+				result = append(result, apps[i])
+			}
+		}
+		return result
+	}
+
+	DataMMS = filterMMS(DataMMS)
 
 	var sliceSliceMms = make([][]data.MMSData, 2)
 	var sliceCopy = make([]data.MMSData, len(DataMMS))
+	copy(sliceCopy, DataMMS)
+
+	// Сортировка исходного среза
 	sort.Slice(DataMMS, func(i, j int) (less bool) {
 		return DataMMS[i].Provider < DataMMS[j].Provider
 	})
 	sliceSliceMms[0] = DataMMS
 
-	copy(sliceCopy, DataMMS)
-
+	// Сортировка копии среза
 	sort.Slice(sliceCopy, func(i, j int) (less bool) {
 		return sliceCopy[i].Country < sliceCopy[j].Country
 	})
 	sliceSliceMms[1] = sliceCopy
 
-	return sliceSliceMms, err
-
+	return sliceSliceMms, nil
 }

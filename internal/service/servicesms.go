@@ -1,62 +1,45 @@
 package service
 
 import (
-	"fmt"
-	"mymod/internal/data"
-	"mymod/internal/method"
+	"os"
 	"sort"
 	"strings"
+
+	"mymod/internal/data"
+	"mymod/internal/helpers"
 )
 
 func FileSMS() ([][]data.SMSData, error) {
-	var StorageDataSMS = make([]data.SMSData, 0)
-	file, err := method.ReadFile(data.FileSmsRead)
+	var storageDataSMS []data.SMSData
+	file, err := os.ReadFile(data.FileSmsRead)
 	if err != nil {
 		return nil, err
 	}
+
 	stringsTemp := strings.Split(string(file), "\n")
-	for i := 0; i < len(stringsTemp)-1; i++ {
-		sms := strings.Split(stringsTemp[i], ";")
-		if len(sms) == 4 {
-			for key := range method.Alfa2Data {
-				if key == sms[0] && method.IsValidSmsMmsProvider(sms[3]) {
-					newPerson := data.SMSData{
-						Country:      sms[0],
-						Bandwidth:    sms[1],
-						ResponseTime: sms[2],
-						Provider:     sms[3],
-					}
-					StorageDataSMS = append(StorageDataSMS, newPerson)
-				}
-			}
-		}
-	}
-	fmt.Println("SMS", StorageDataSMS)
-
-	for i := 0; i < len(StorageDataSMS); i++ {
-		for key := range method.Alfa2Data {
-			if StorageDataSMS[i].Country == key {
-				StorageDataSMS[i].Country = method.Alfa2Data[key]
-
-			} else {
-				continue
-			}
+	for _, smsString := range stringsTemp {
+		sms := strings.Split(smsString, ";")
+		if len(sms) < 4 || !helpers.IsValidSmsMmsProvider(sms[3]) {
+			continue
 		}
 
+		if country, ok := helpers.Alfa2Data[sms[0]]; ok {
+			newPerson := data.SMSData{
+				Country:      country,
+				Bandwidth:    sms[1],
+				ResponseTime: sms[2],
+				Provider:     sms[3],
+			}
+			storageDataSMS = append(storageDataSMS, newPerson)
+		}
 	}
-	var sliceSliceSms = make([][]data.SMSData, 2)
-	var sliceCopy = make([]data.SMSData, len(StorageDataSMS))
-	sort.Slice(StorageDataSMS, func(i, j int) (less bool) {
-		return StorageDataSMS[i].Provider < StorageDataSMS[j].Provider
+
+	sort.Slice(storageDataSMS, func(i, j int) bool {
+		if storageDataSMS[i].Provider != storageDataSMS[j].Provider {
+			return storageDataSMS[i].Provider < storageDataSMS[j].Provider
+		}
+		return storageDataSMS[i].Country < storageDataSMS[j].Country
 	})
-	sliceSliceSms[0] = StorageDataSMS
 
-	copy(sliceCopy, StorageDataSMS)
-
-	sort.Slice(sliceCopy, func(i, j int) (less bool) {
-		return sliceCopy[i].Country < sliceCopy[j].Country
-	})
-	sliceSliceSms[1] = sliceCopy
-	return sliceSliceSms, err
-
+	return [][]data.SMSData{storageDataSMS, append([]data.SMSData(nil), storageDataSMS...)}, nil
 }
